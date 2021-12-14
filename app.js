@@ -1,48 +1,41 @@
-//  const FileSystem = require('./filesystem'); 
-//  const fileSystem = new FileSystem ;
-// fileSystem.on('fileCreated',()=>{
-//     console.log('TP Completed');
-// })
-// fileSystem.fileCreated();
+var createError = require('http-errors');
+var express = require('express');
+var path = require('path');
+var cookieParser = require('cookie-parser');
+var logger = require('morgan');
 
+var indexRouter = require('./routes/index');
+var usersRouter = require('./routes/users');
 
-const http = require('http');
-const fs = require('fs');
-const server = http.createServer((request,response)=>{
-    // console.log(request.url);
-    // console.log(request.method);
-    response.statusCode = 200;
-    let view = './views/';
-    switch(request.url){
-        case "/":
-            view += 'index.html';
-            break;
-        case "/contact-us":
-            if(request.method.toLowerCase() === 'post'){
-                let data ='';
-                request.on('data', (chunk)=>{data += chunk.toString()});
-                request.on('end', ()=>{
-                    console.log(new URLSearchParams(data));
-                })
-                response.statusCode =302;
-                response.setHeader('Location','/contact-us');
-            }
-            view += 'contact.html';
-            break;
-        
-        default:
-            response.statusCode =404;
-            view += '404.html';
-            break;    
-    }
-    
-    response.setHeader('Content-Type','text/html');
-    fs.readFile(view, {encoding : 'utf-8'}, (error, content)=>{
-        if(error) console.error(error);
-        if(content) response.write(content);
-        response.end();
+var app = express();
 
-    })
-})
-// server.on('connection', ()=> {console.log('request something')})
-server.listen(4000);
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
+
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  next(createError(404));
+});
+
+// error handler
+app.use(function(err, req, res, next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  // render the error page
+  res.status(err.status || 500);
+  res.render('error');
+});
+
+module.exports = app;
