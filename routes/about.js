@@ -10,7 +10,9 @@ router.get('/', (request, response) =>{
     persons = persons.map(person =>{
       return{
         title: person.name,
-        subtitle: person.age
+        subtitle: person.age,
+        primaryCta: '/profile/iduser',
+        primaryCtaLabel: 'See profile'
       };
     })
     

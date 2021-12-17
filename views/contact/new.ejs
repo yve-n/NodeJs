@@ -1,4 +1,9 @@
 <%- include('../_partials/_layout-start') %>
+<% if (locals.error) { %>
+  <div class="alert alert-danger">
+    <%= error.message %>
+  </div>
+<% } %>
 
 <form action="/contact-us" method="post">
   <div>

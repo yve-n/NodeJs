@@ -1,0 +1,70 @@
+<%- include('../_partials/_layout-start') %>
+
+<% if (locals.errors) { %>
+  <% errors.forEach(error => { %>
+    <div class="alert alert-danger"><%= error.message %></div>
+  <% }) %>
+<% } %>
+<form method="post">
+    <div>
+      <label class="form-label" for="name">Name</label>
+      <input class="form-control" type="text" id="name" name="name"
+      <% if (locals.product) { %> value="<%= product.name %>" <% } %>
+      >
+    </div>
+    <div>
+      <label class="form-label" for="price">price</label>
+      <input class="form-control" type="number" id="price" name="price"
+      <% if (locals.product) { %> value="<%= product.price %>" <% } %>
+      >
+    </div>
+    <div>
+        <label class="form-label" for="stock">stock</label>
+        <input class="form-control" type="number" id="stock" name="stock"
+        <% if (locals.product) { %> value="<%= product.stock %>" <% } %>
+        >
+    </div>
+    <div>
+      <label class="form-label" for="picture">picture</label>
+      <input class="form-control" type="text" id="picture" name="picture"
+      <% if (locals.product) { %> value="<%= product.picture %>" <% } %>
+      >
+    </div>
+    <br>
+    <div>
+      <input type="submit" value="<%= locals.product ? 'edit' : 'create' %>" class="btn btn-success">
+    </div>
+    <br>
+  </form>
+
+  <hr>
+  <table class="table">
+    <thead> 
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Price</th>
+        <th scope="col">Stock</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% products.forEach((product, index) => { %>
+      <tr>
+        <td><%= index + 1 %> </td>
+        <td><%= product.name %></td>
+        <td><%= product.price %></td>
+        <td><%= product.stock %></td>
+        <td> 
+          <a href="/product/<%= product.id %>/edit" class="btn btn-success">Edit</a>
+          <form action="/product/<%=product.id %>/delete " method="post">
+            <button type="submit" class="btn btn-danger">Delete</button>
+          </form>
+        </td>
+      </tr>
+      <% }) %>
+
+    </tbody>
+  </table>
+
+  <%- include('../_partials/_layout-end') %>

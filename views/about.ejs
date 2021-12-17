@@ -2,11 +2,10 @@
 
     <% persons.forEach(person => { %>
         <div class="card" style="width: 18rem;">
-            <img src="..." class="card-img-top" alt="...">
             <div class="card-body">
                 <h5 class="card-title"><%=person.title %></h5>
                 <p class="card-text"><%=person.subtitle %></p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
+                <a href="<%= person.primaryCta %> " class="btn btn-primary"><%=person.primaryCtaLabel %> </a>
             </div>
         </div>
     <% }) %>
